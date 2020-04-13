@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Day03_14.Redis.Models.Products>
+
+@{
+    ViewBag.Title = "Show";
+}
+
+<h2>Show</h2>
+
+
+@using (Html.BeginForm("Show", "Pro", FormMethod.Post))
+{
+
+    <input name="time1" type="datetime" placeholder="日期范围" onclick="WdatePicker()" />
+    <input name="time2" type="datetime" placeholder="日期范围" onclick="WdatePicker()" />
+    <input name="name" type="text" placeholder="产品信息" />
+    <input id="Submit1" type="submit" value="查询" class="btn btn-success" />
+    <input id="Button1" type="button" value="添加产品+" class="btn btn-primary" onclick="location.href='/Pro/Add'" />
+}
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            产品名称
+        </th>
+        <th>
+            所属品牌
+        </th>
+        <th>
+            所属分类
+        </th>
+        <th>
+            是否上架
+        </th>
+        <th>
+            是否有货
+        </th>
+        <th>
+            更新时间
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pinpai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fenlei)
+            </td>
+            <td>
+                @(item.SFSJ == true ? "是" : "否")
+            </td>
+            <td>
+                @(item.SFYH == true ? "是" : "否")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Upttime)
+            </td>
+            <td>
+                @Html.ActionLink("修改", "Upt", new { id = item.Id }) |
+                @Html.ActionLink("删除", "Del", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<a href="javascript:;" onclick="First()">首页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="javascript:;" onclick="Prev()">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="javascript:;" onclick="Next()">下一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="javascript:;" onclick="Last()">尾页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span>当前页：</span>@ViewBag.currentpage &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span>总页数：</span>@ViewBag.totalpage
+
+<script>
+    function First() {
+        var p = 1;
+        location.href = "/Pro/Show?currentpage=" + p;
+    }
+    function Prev() {
+        var p =@ViewBag.currentpage - 1;
+        location.href = "/Pro/Show?currentpage=" + p;
+    }
+    function Next() {
+        var p = @ViewBag.currentpage + 1;
+        location.href = "/Pro/Show?currentpage=" + p;
+    }
+    function Last() {
+        var p = @ViewBag.totalpage;
+        location.href = "/Pro/Show?currentpage=" + p;
+    }
+</script>
+
+@section Scripts {
+    <script src="~/Content/My97DatePicker/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+}
